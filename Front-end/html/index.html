@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="..\js\script.js" async></script>
+    <link rel="stylesheet" href="..\style\style.css">
+    <title>Aula HTML</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>Validador de CPF</h3>
+        </div>
+
+        <div class="body">
+            <input type="text" name="" id="cpf" placeholder="Insira o seu CPF" maxlength="14">
+            <button id="btValidar" onclick="validaCPF()">Validar</button>
+        </div>
+
+        <div class="result">
+          <span id="resultado"></span>
+        </div>
+
+        <div class="cpf-list">
+            <h4>Lista de CPFs:</h4>
+            <ul id="cpfList"></ul>
+        </div>
+    </div>
+</body>
+</html>

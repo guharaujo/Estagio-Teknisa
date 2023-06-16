@@ -1,0 +1,28 @@
+.container{
+  text-align: center;
+}
+
+.body input{
+  padding: 8px;
+}
+
+.body button{
+  padding: 8px 15px;
+}
+
+.result{
+  margin-top: 25px;
+  font-size: 20px;
+}
+
+#cpfList {
+  list-style-type: none;
+}
+
+.cpf-item {
+  margin-bottom: 10px; 
+}
+
+.delete-button {
+  margin-left: 10px; 
+}
