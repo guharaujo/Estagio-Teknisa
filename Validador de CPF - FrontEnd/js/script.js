@@ -1,57 +1,62 @@
-function validaCPF(){
-    const cpfFormatado = document.getElementById('cpf').value;
+$(document).ready(function () {
+  $("#cpf").inputmask("999.999.999-99");
+});
 
-    const cpf = limpaFormatacao(cpfFormatado)
+function validaCPF() {
+  const cpfFormatado = document.getElementById('cpf').value;
 
-    if(cpf.length !== 11){
-        mostraResultado('O CPF deve ter exatamente 11 caracteres', 'red');
-        return
-    }
-    if(verificaDigitosRepetidos(cpf)){
-        mostraResultado('CPF não pode conter digitos repetidos', 'red');
-        return;
-    }
+  const cpf = limpaFormatacao(cpfFormatado);
 
-    const digito1 = calcularDigitoVerificador(cpf, 1);
+  
+  if (verificaDigitosRepetidos(cpf)) {
+    mostraResultado('CPF não pode conter digitos repetidos', 'red');
+    return;
+  }
 
-    if(!digito1){
-        mostraResultado(`CPF Inválido - ${cpfFormatado}`, 'red')
-    }
+  const digito1 = formulaCpf(cpf);
 
-    const digito2 = calcularDigitoVerificador(cpf, 2);  
+  if (!digito1) {
+    mostraResultado(`CPF Inválido - ${cpfFormatado}`, 'red');
+    return;
+  }
 
-    if(!digito2){
-        mostraResultado(`CPF Inválido - ${cpfFormatado}`, 'red')
-    }
+  const digito2 = formulaCpf(cpf);
 
-    mostraResultado(`CPF Válido - ${cpfFormatado}`, 'green', cpfFormatado)
+  if (!digito2) {
+    mostraResultado(`CPF Inválido - ${cpfFormatado}`, 'red');
+    return;
+  }
+
+  mostraResultado(`CPF Válido - ${cpfFormatado}`, 'green', cpfFormatado)
 }
 
+function formulaCpf(cpf) {
+  let Soma = 0;
+  let Resto;
 
+  for (let i = 1; i <= 9; i++) {
+    Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    Resto = (Soma * 10) % 11;
+  }
 
-function calcularDigitoVerificador(cpf, posicao){
-    const sequencia = cpf.slice(0, 8 + posicao).split('');
+  if ((Resto == 10) || (Resto == 11)) Resto = 0;
+  if (Resto != parseInt(cpf.substring(9, 10))) return false;
+  Soma = 0;
 
-    let soma = 0;
+  for (i = 1; i <= 10; i++) {
+    Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    Resto = (Soma * 10) % 11;
+  }
 
-    let multiplicador = 9 + posicao;
-
-    for(const numero of sequencia){
-        soma += multiplicador * Number(numero);
-        multiplicador--
-    }
-
-    const restoDivisao = (soma * 10)%11;
-    const digito = cpf.slice(8+posicao, 9+posicao);
-
-    return restoDivisao == digito;
-
+  if ((Resto == 10) || (Resto == 11)) Resto = 0;
+  if (Resto != parseInt(cpf.substring(10, 11))) return false;
+  return true;
 }
 
-function limpaFormatacao(cpf){
-    cpf = cpf.replace(/\D/g, '');
+function limpaFormatacao(cpf) {
+  cpf = cpf.replace(/\D/g, '');
 
-    return cpf;
+  return cpf;
 }
 
 function mostraResultado(texto, cor, cpf) {
@@ -67,21 +72,21 @@ function mostraResultado(texto, cor, cpf) {
     cpfElement.classList.add('cpf-item');
     const deleteButton = document.createElement('button');
     deleteButton.textContent = "Excluir";
-    deleteButton.addEventListener('click', function() {
+    deleteButton.addEventListener('click', function () {
       excluirCPF(cpf);
     });
-    deleteButton.classList.add('delete-button'); // Adiciona a classe 'delete-button'
+    deleteButton.classList.add('delete-button');
     cpfElement.appendChild(deleteButton);
     cpfList.appendChild(cpfElement);
-}
+  }
 }
 
 function formatarCPF(cpf) {
   return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
 }
 
-function verificaDigitosRepetidos(cpf){
-    return cpf.split('').every((d) => d === cpf[0]);
+function verificaDigitosRepetidos(cpf) {
+  return cpf.split('').every((d) => d === cpf[0]);
 }
 
 function excluirCPF(cpf) {
